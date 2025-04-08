@@ -2,7 +2,7 @@ import cv2
 
 def detect_debugging_interfaces(image):
     """Detect potential debugging interfaces on a PCB image"""
-    if len(image.shape) > 2:  # If color image
+    if len(image.shape) > 2: 
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     else:
         gray = image
