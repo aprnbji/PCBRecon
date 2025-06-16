@@ -1,7 +1,7 @@
 let projects = [];
 
 // Gemini API Configuration
-const GEMINI_API_KEY = 'AIzaSyCri7yRXQOgRBdhb24i0zIL6Qelp7QODHA'; 
+const GEMINI_API_KEY = 'GEMINI_API_KEY'; 
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
 // Convert file to base64
