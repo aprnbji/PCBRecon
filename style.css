@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  min-height: 100vh;
+}
+
+.glass-effect {
+  background: rgba(45, 45, 45, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.orange-gradient {
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+}
+
+.orange-gradient-hover:hover {
+  background: linear-gradient(135deg, #ff8255 0%, #ffb84d 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #2d2d2d;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #ff6b35;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #f7931e;
+}
+
+.dialog-content {
+  height: calc(90vh - 120px);
+}
+
+#dialogChatBox p {
+  margin: 0.5rem 0;
+}
+
+#dialogChatBox h1, 
+#dialogChatBox h2, 
+#dialogChatBox h3 {
+  color: #ff6b35;
+  margin: 1rem 0 0.5rem 0;
+  font-weight: bold;
+}
+
+#dialogChatBox ul, 
+#dialogChatBox ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+#dialogChatBox li {
+  margin: 0.25rem 0;
+}
+
+#dialogChatBox code {
+  background-color: #374151;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+}
+
+#dialogChatBox pre {
+  background-color: #374151;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+#dialogChatBox blockquote {
+  border-left: 4px solid #ff6b35;
+  padding-left: 1rem;
+  margin: 0.5rem 0;
+  font-style: italic;
+}
+
+.left-panel {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.right-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.chat-input-container {
+  flex-shrink: 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 1rem;
+}
