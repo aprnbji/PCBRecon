@@ -129,7 +129,6 @@ function renderChatMessage(message, chatBox) {
         : `<svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>`;
     
     const senderName = isUser ? 'You' : 'AI Assistant';
-    // The data structure from our backend is `message.message`
     const messageContent = isUser ? message.message : marked.parse(message.message);
 
     msgDiv.innerHTML = `
@@ -145,14 +144,10 @@ function renderChatMessage(message, chatBox) {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-/**
- * Opens the detailed project view dialog.
- * @param {number} projectId - The ID of the project to open.
- */
 async function openProjectDialog(projectId) {
   try {
     const project = await getProjectDetails(projectId);
-    currentProjectId = projectId; // Set the global ID
+    currentProjectId = projectId; 
 
     document.getElementById('dialogTitle').innerText = project.name;
     document.getElementById('dialogImage').src = project.image_base64;
@@ -160,7 +155,6 @@ async function openProjectDialog(projectId) {
 
     const chatBox = document.getElementById('dialogChatBox');
     chatBox.innerHTML = '';
-    // The backend provides a `chat_messages` array with the full history
     project.chat_messages.forEach(msg => renderChatMessage(msg, chatBox));
 
     document.getElementById('deviceDialog').classList.remove('hidden');
@@ -172,7 +166,7 @@ async function openProjectDialog(projectId) {
 
 function closeDeviceDialog() {
   document.getElementById('deviceDialog').classList.add('hidden');
-  currentProjectId = null; // Clear the global state
+  currentProjectId = null; 
 }
 
 function closeUploadModal() {
@@ -184,11 +178,7 @@ function openUploadModal() {
   document.getElementById('uploadModal').classList.remove('hidden');
 }
 
-// --- EVENT HANDLERS ---
 
-/**
- * Handles the new project form submission.
- */
 async function handleUpload(event) {
   event.preventDefault();
   const name = document.getElementById('projectName').value;
@@ -205,7 +195,7 @@ async function handleUpload(event) {
     try {
       const imageBase64 = e.target.result;
       await createProject(name, imageFile.name, imageBase64);
-      loadProjects(); // Refresh the list from the server
+      loadProjects(); 
       closeUploadModal();
     } catch (error) {
       console.error('Error creating project:', error);
@@ -218,44 +208,37 @@ async function handleUpload(event) {
   reader.readAsDataURL(imageFile);
 }
 
-/**
- * Handles sending a message from the chat dialog.
- */
+
 async function sendDialogMessage() {
   const input = document.getElementById('dialogChatInput');
   const message = input.value.trim();
   if (!message || !currentProjectId) return;
 
   const chatBox = document.getElementById('dialogChatBox');
-  // Optimistically display the user's message immediately
   renderChatMessage({ sender: 'user', message: message }, chatBox);
-  const userMessage = input.value; // Save before clearing
+  const userMessage = input.value; 
   input.value = '';
 
   try {
-    // Send message to the backend and wait for the real bot response
     const botResponse = await postChatMessage(currentProjectId, userMessage);
     renderChatMessage(botResponse, chatBox);
   } catch (error) {
     console.error('Error sending message:', error);
-    // Display an error message in the chat
+    
     renderChatMessage({ sender: 'bot', message: 'Sorry, I encountered an error and could not get a response.' }, chatBox);
   }
 }
 
-// --- INITIAL SETUP ---
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Load projects from the server as soon as the page is ready
   loadProjects();
 
-  // Attach all necessary event listeners
   document.getElementById('uploadForm').addEventListener('submit', handleUpload);
   document.getElementById('send-message-btn').addEventListener('click', sendDialogMessage);
   document.getElementById('dialogChatInput').addEventListener('keypress', (e) => {
-    // Send message on Enter key, but not Shift+Enter
+
     if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault(); // Prevents adding a new line
+      e.preventDefault(); 
       sendDialogMessage();
     }
   });
