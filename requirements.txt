@@ -4,4 +4,5 @@ sqlalchemy
 python-dotenv
 python-multipart
 httpx
-pillow
+google-generativeai 
+Jinja2
