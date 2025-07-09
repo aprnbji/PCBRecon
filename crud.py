@@ -91,6 +91,7 @@ def delete_project(db: Session, project_id: int) -> bool:
     project = get_project(db, project_id)
     if not project:
         return False
+    
     db.delete(project)
     db.commit()
     return True
