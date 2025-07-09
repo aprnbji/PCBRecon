@@ -1,2 +1,5 @@
 .env
 .venv/
+boards/
+__pycache__/
+pcbrecon.db
