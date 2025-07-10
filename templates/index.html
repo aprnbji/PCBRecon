@@ -6,24 +6,19 @@
   <title>EmbedAI</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
-  <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
-</head>
+  
+  <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}"></head>
 <body class="text-gray-100">
   <div class="min-h-screen">
-
-    <!-- HEADER IS REMOVED -->
 
     <div class="max-w-6xl mx-auto p-6 pt-12">
       <!-- Welcome Section -->
       <div class="mb-12 animate-fade-in">
         <div class="glass-effect rounded-2xl p-8">
-
-          <!-- START OF CORRECTION -->
           <!-- The brand name -->
           <h2 class="text-3xl font-bold mb-2 bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">EmbedAI</h2>
           <!-- The restored "Welcome back!" heading -->
           <h3 class="text-4xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Welcome back!</h3>
-          <!-- END OF CORRECTION -->
           
           <p class="text-gray-400 mb-6 text-lg">Analyze your PCB designs with advanced AI-powered insights</p>
           <button onclick="openUploadModal()" class="orange-gradient orange-gradient-hover text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 shadow-lg text-lg">
@@ -79,38 +74,38 @@
 
     <!-- Device Dialog -->
     <div id="deviceDialog" class="fixed inset-0 bg-black bg-opacity-75 hidden flex justify-center items-center z-50">
-      <div class="glass-effect rounded-2xl p-8 w-[95%] max-w-6xl h-[90%] mx-4 animate-fade-in">
+      <div class="glass-effect rounded-2xl p-8 w-[95%] max-w-6xl mx-4 animate-fade-in dialog-container">
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-2xl font-bold text-white" id="dialogTitle"></h3>
           <button onclick="closeDeviceDialog()" class="text-gray-400 hover:text-white text-3xl transition-colors">×</button>
         </div>
-        <div class="flex flex-col md:flex-row gap-8 h-[calc(100%-4rem)]">
+        <div class="flex flex-col md:flex-row gap-8 dialog-content">
           <!-- Left panel: image and description -->
-          <div class="w-full md:w-1/2 flex flex-col gap-6">
-            <div class="glass-effect rounded-xl p-4">
+          <div class="w-full md:w-1/2 left-panel">
+            <div class="glass-effect rounded-xl p-4 mb-6">
               <img id="dialogImage" src="" alt="Board Image" class="rounded-lg w-full h-64 object-contain bg-gray-900" />
             </div>
-            <div class="glass-effect rounded-xl p-6 flex-grow overflow-hidden flex flex-col">
-              <h4 class="text-xl font-semibold mb-4 text-orange-400 flex items-center flex-shrink-0">
+            <div class="glass-effect rounded-xl p-6 analysis-container">
+              <h4 class="text-xl font-semibold mb-4 text-orange-400 flex items-center">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                 </svg>
                 Board Analysis
               </h4>
-              <div id="dialogDescription" class="space-y-2 text-gray-300 overflow-y-auto custom-scrollbar"></div>
+              <div id="dialogDescription" class="analysis-content custom-scrollbar"></div>
             </div>
           </div>
           <!-- Right panel: chat -->
-          <div class="w-full md:w-1/2 flex flex-col">
-            <div class="glass-effect rounded-xl p-6 flex-grow flex flex-col">
-              <h4 class="text-xl font-semibold mb-4 text-orange-400 flex items-center flex-shrink-0">
+          <div class="w-full md:w-1/2 right-panel">
+            <div class="glass-effect rounded-xl p-6 chat-container">
+              <h4 class="text-xl font-semibold text-orange-400 flex items-center mb-4">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                 </svg>
                 AI Assistant
               </h4>
-              <div id="dialogChatBox" class="bg-gray-900 rounded-lg p-4 overflow-y-auto custom-scrollbar space-y-4 flex-grow mb-4"></div>
-              <div class="flex-shrink-0">
+              <div id="dialogChatBox" class="chat-messages custom-scrollbar"></div>
+              <div class="chat-input-container">
                 <div class="flex gap-2">
                   <input type="text" id="dialogChatInput" class="flex-1 bg-gray-800 border border-gray-600 text-white p-3 rounded-lg focus:border-orange-500 focus:outline-none transition-colors" placeholder="Ask about your PCB..." />
                   <button id="send-message-btn" class="orange-gradient orange-gradient-hover text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-lg">
@@ -126,6 +121,5 @@
       </div>
     </div>
   </div>
-  <script src="{{ url_for('static', path='/script.js') }}"></script>
-</body>
+  <script src="{{ url_for('static', path='/script.js') }}"></script></body>
 </html>
