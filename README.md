@@ -52,7 +52,6 @@ sudo nano /etc/nginx/conf.d/pcbrecon.conf
 ```
 
 pcbrecon.conf
-
 ```
 server {
     listen 80;
