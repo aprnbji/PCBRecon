@@ -1,7 +1,7 @@
 # PCBRecon
 
 ## Overview
-PCBRecon is a hardware analysis tool for embedded security auditing, utilizing machine learning and image recognition to identify PCB components and potential debugging interfaces.
+PCBRecon is a hardware analysis tool for embedded security auditing that utilizes machine learning and image recognition to identify PCB components and potential debugging interfaces.
 
 ## Key Features
 - Component recognition
