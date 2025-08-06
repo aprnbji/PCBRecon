@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  pcbrecon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pcbrecon-app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./uploads:/app/uploads
+      - ./models:/app/models
+    restart: unless-stopped
+    networks:
+      - pcbrecon-network
+
+networks:
+  pcbrecon-network:
+    driver: bridge
