@@ -82,7 +82,7 @@ sudo systemctl reload nginx
 ### Run the application
 
 ```bash
-python3 main.py
+docker-compose up --build
 ```
 
 Open your web browser and navigate to:
