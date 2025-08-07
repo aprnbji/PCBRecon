@@ -4,3 +4,6 @@ boards/
 __pycache__/
 pcbrecon.db
 nginx.config
+templates/
+uploads/
+models/
