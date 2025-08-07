@@ -22,19 +22,6 @@ git clone https://github.com/aprnbji/PCBRecon.git
 cd PCBRecon
 ```
 
-### Set Up the Python Environment 
-
-```bash
-# Create a virtual environment
-python3 -m venv .venv
-
-# Activate the virtual environment
-source venv/bin/activate
-
-# Install the required Python packages
-pip install -r requirements.txt
-```
-
 ### Configure Environment Variables
 
 ```bash
