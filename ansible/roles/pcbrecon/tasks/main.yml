@@ -1,0 +1,135 @@
+- name: Remove conflicting Docker sources
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/docker.list
+    - /etc/apt/sources.list.d/docker.list.save
+    - /etc/apt/keyrings/docker.gpg
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install required packages
+  apt:
+    name:
+      - docker.io
+      - docker-compose-plugin
+      - git
+      - curl
+      - nginx
+    state: present
+
+- name: Start and enable Docker service
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Create application user
+  user:
+    name: "{{ app_user }}"
+    system: yes
+    shell: /bin/bash
+    home: "{{ app_directory }}"
+    create_home: yes
+
+- name: Add application user to docker group
+  user:
+    name: "{{ app_user }}"
+    groups: docker
+    append: yes
+
+- name: Create application directory
+  file:
+    path: "{{ app_directory }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: '0755'
+
+- name: Copy application files
+  synchronize:
+    src: /home/garlicbread/work/PCBRecon/
+    dest: /opt/pcbrecon/
+    recursive: yes
+    delete: yes
+    rsync_opts:
+      - "--exclude=ansible"
+      - "--exclude=.git"
+      - "--exclude=__pycache__"
+      - "--exclude=*.pyc"
+
+- name: Set ownership of application files
+  file:
+    path: "{{ app_directory }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    recurse: yes
+
+- name: Copy environment file
+  template:
+    src: .env.j2
+    dest: "{{ app_directory }}/.env"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: '0600'
+
+- name: Remove existing nginx configuration
+  file:
+    path: /etc/nginx/conf.d/pcbrecon.conf
+    state: absent
+
+- name: Copy nginx configuration
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/conf.d/pcbrecon.conf
+    backup: yes
+
+- name: Test nginx configuration
+  command: nginx -t
+
+- name: Restart nginx
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes
+
+- name: Copy docker-compose.yml
+  copy:
+    src: "{{ playbook_dir }}/../../docker-compose.yml"
+    dest: "{{ app_directory }}/docker-compose.yml"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: '0644'
+
+- name: Copy Dockerfile
+  copy:
+    src: "{{ playbook_dir }}/../../Dockerfile"
+    dest: "{{ app_directory }}/Dockerfile"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: '0644'
+
+- name: Copy requirements.txt
+  copy:
+    src: "{{ playbook_dir }}/../../requirements.txt"
+    dest: "{{ app_directory }}/requirements.txt"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: '0644'
+
+- name: Build and start Docker containers
+  command: docker compose up -d --build
+  args:
+    chdir: "{{ app_directory }}"
+  become_user: "{{ app_user }}"
+
+- name: Wait for application to be ready
+  uri:
+    url: "http://localhost:8000"
+    method: GET
+    status_code: 200
+  retries: 30
+  delay: 10
