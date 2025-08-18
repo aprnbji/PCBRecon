@@ -11,8 +11,8 @@ services:
     env_file:
       - .env
     volumes:
-      - ./uploads:/app/uploads
-      - ./models:/app/models
+      - ./uploads:/app/uploads    
+      - ./models:/app/models      
     restart: unless-stopped
     networks:
       - pcbrecon-network
