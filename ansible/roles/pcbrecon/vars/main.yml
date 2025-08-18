@@ -1,0 +1,4 @@
+app_name: pcbrecon
+app_directory: /opt/pcbrecon
+app_user: pcbrecon
+docker_compose_version: "2.21.0"
