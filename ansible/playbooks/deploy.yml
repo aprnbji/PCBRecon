@@ -1,0 +1,10 @@
+---
+- name: Deploy PCBRecon Application
+  hosts: pcbrecon-server
+  become: yes
+  vars_files:
+    - /home/garlicbread/work/PCBRecon/ansible/secrets.yml
+  vars:
+    gemini_api_key: "{{ vault_gemini_api_key }}"
+  roles:
+    - pcbrecon
