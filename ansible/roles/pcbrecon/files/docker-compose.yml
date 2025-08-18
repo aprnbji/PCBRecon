@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  pcbrecon:
+    image: garlicbr34d/pcbrecon-pcbrecon:v1
+    container_name: pcbrecon
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./static:/app/static
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
