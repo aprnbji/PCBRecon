@@ -1,22 +1,24 @@
-version: "3.8"
+version: "3.9"
 
 services:
   pcbrecon:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: pcbrecon-app
+    image: garlicbr34d/pcbrecon:latest
+    container_name: pcbrecon
+    restart: always
     ports:
       - "8000:8000"
-    env_file:
-      - .env
     volumes:
-      - ./uploads:/app/uploads    
-      - ./models:/app/models      
-    restart: unless-stopped
-    networks:
-      - pcbrecon-network
+      - ./uploads:/app/uploads
+      - ./static:/app/static
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
 
-networks:
-  pcbrecon-network:
-    driver: bridge
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
