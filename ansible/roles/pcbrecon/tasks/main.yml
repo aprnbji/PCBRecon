@@ -49,17 +49,14 @@
     group: "{{ app_user }}"
     mode: '0755'
 
-- name: Copy application files
-  synchronize:
-    src: /home/garlicbread/work/PCBRecon/
-    dest: /opt/pcbrecon/
-    recursive: yes
-    delete: yes
-    rsync_opts:
-      - "--exclude=ansible"
-      - "--exclude=.git"
-      - "--exclude=__pycache__"
-      - "--exclude=*.pyc"
+- name: Copy prometheus.yml
+  copy:
+    src: "{{ playbook_dir }}/../../prometheus.yml"
+    dest: "{{ app_directory }}/prometheus.yml"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: '0644'
+
 
 - name: Set ownership of application files
   file:
@@ -104,24 +101,8 @@
     group: "{{ app_user }}"
     mode: '0644'
 
-- name: Copy Dockerfile
-  copy:
-    src: "{{ playbook_dir }}/../../Dockerfile"
-    dest: "{{ app_directory }}/Dockerfile"
-    owner: "{{ app_user }}"
-    group: "{{ app_user }}"
-    mode: '0644'
-
-- name: Copy requirements.txt
-  copy:
-    src: "{{ playbook_dir }}/../../requirements.txt"
-    dest: "{{ app_directory }}/requirements.txt"
-    owner: "{{ app_user }}"
-    group: "{{ app_user }}"
-    mode: '0644'
-
-- name: Build and start Docker containers
-  command: docker compose up -d --build
+- name: Pull and start Docker containers
+  command: docker compose up -d
   args:
     chdir: "{{ app_directory }}"
   become_user: "{{ app_user }}"
