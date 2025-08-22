@@ -11,14 +11,16 @@ from database import SessionLocal, engine, Base
 import crud
 from schemas import ProjectCreate, ProjectResponse, ChatMessageCreate, ChatMessageResponse, ProjectWithMessages
 
+from prometheus_fastapi_instrumentator import Instrumentator
+
 from dotenv import load_dotenv
 load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-if not GEMINI_API_KEY:
-    raise RuntimeError("GEMINI_API_KEY not set")
 
 app = FastAPI()
+
+Instrumentator().instrument(app).expose(app)
 
 Base.metadata.create_all(bind=engine)
 
