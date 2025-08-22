@@ -6,3 +6,4 @@ pcbrecon.db
 nginx.config
 uploads/
 models/
+ansible/secrets.yml
