@@ -1,0 +1,11 @@
+.env
+frontend/.env.local
+frontend/node_modules
+frontend/.next
+backend/pcbrecon.db
+backend/__pycache__
+__pycache__
+.venv
+backend/__init__.py
+frontend/hooks
+frontend/public
