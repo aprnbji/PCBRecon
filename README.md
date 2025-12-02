@@ -131,5 +131,8 @@ ansible-playbook playbooks/deploy.yml --ask-vault-pass
   ```
 
 
+  This project is work in progress. The remaining components will be added soon.
+
+
 
 
