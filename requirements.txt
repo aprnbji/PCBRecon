@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+prometheus-fastapi-instrumentator
+python-dotenv
+google-generativeai
+Pillow
