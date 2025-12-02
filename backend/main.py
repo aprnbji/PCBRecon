@@ -27,13 +27,17 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# Add CORS middleware - MUST be added before other routes
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],  # Next.js default ports
+    allow_origins=[
+        "http://localhost",           # Nginx
+        "http://localhost:3000",      # Direct Next.js
+        "http://127.0.0.1",
+        "http://127.0.0.1:3000",
+    ],
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods (GET, POST, DELETE, etc.)
-    allow_headers=["*"],  # Allows all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 Instrumentator().instrument(app).expose(app)
