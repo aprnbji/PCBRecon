@@ -157,7 +157,6 @@ export default function LandingPage() {
                           stroke="oklch(0.6 0.2 142.5)"
                           strokeWidth="1"
                           opacity="0.4"
-                          r="8"
                         />
                       </g>
                     )
