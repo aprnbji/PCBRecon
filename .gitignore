@@ -9,3 +9,6 @@ __pycache__
 backend/__init__.py
 frontend/hooks
 frontend/public
+backend/.dockerignore
+frontend/.dockerignore
+.dockerignore
