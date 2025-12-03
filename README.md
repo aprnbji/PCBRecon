@@ -41,7 +41,7 @@ DATABASE_URL = sqlite:///./pcbrecon.db # what i have used
 sudo nano /etc/nginx/conf.d/pcbrecon.conf
 ```
 
-pcbrecon.conf
+default.conf
 ```bash
 upstream backend {
     server 127.0.0.1:8000;
