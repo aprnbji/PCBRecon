@@ -99,7 +99,8 @@ export default function ProjectDetailPage() {
           <Skeleton className="h-10 w-10" />
           <Skeleton className="h-8 w-64" />
         </div>
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-8 md:grid-cols-2 items-start">
+
           <Skeleton className="h-96" />
           <Skeleton className="h-96" />
         </div>
