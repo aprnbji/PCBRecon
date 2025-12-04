@@ -144,6 +144,9 @@ You’ll be prompted to set a vault password. Inside the file, add your secrets:
 
 ```yaml
 vault_gemini_api_key: "your-gemini-api-key"
+vault_db_password: "your-db-password"
+vault_supabase_url: "your-supabase-url"
+vault_supabase_anon_key: "your-supabase-anon-key"
 ```
 
 * To **edit later**:
@@ -187,10 +190,6 @@ ansible-playbook playbooks/deploy.yml --ask-vault-pass
   ```bash
   ansible-playbook playbooks/deploy.yml --vault-password-file ~/.vault_pass.txt
   ```
-
-
-  This project is work in progress. The remaining components will be added soon.
-
 
 
 
