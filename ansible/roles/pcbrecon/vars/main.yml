@@ -1,0 +1,14 @@
+---
+app_name: pcbrecon
+app_directory: /opt/pcbrecon
+app_user: pcbrecon
+docker_compose_version: "2.21.0"
+
+backend_port: 8000
+frontend_port: 3000
+nginx_port: 80
+
+postgres_db: pcbrecon
+postgres_user: pcbrecon
+
+domain_name: localhost
