@@ -12,3 +12,4 @@ frontend/public
 backend/.dockerignore
 frontend/.dockerignore
 .dockerignore
+ansible/secrets.yml
