@@ -94,7 +94,8 @@ export default function ProjectDetailPage() {
 
   if (loading) {
     return (
-      <div className="space-y-6">
+      <div className="w-full flex justify-center">
+        <div className="space-y-6 max-w-6xl w-full px-4">
         <div className="flex items-center gap-4">
           <Skeleton className="h-10 w-10" />
           <Skeleton className="h-8 w-64" />
@@ -104,6 +105,7 @@ export default function ProjectDetailPage() {
           <Skeleton className="h-96" />
           <Skeleton className="h-96" />
         </div>
+      </div>
       </div>
     );
   }
@@ -152,7 +154,7 @@ export default function ProjectDetailPage() {
       </div>
 
       {/* Main Content */}
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-10 md:grid-cols-2 items-start justify-center">
         {/* Image */}
         <Card>
           <CardHeader>
