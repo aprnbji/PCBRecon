@@ -1,0 +1,178 @@
+---
+- name: Remove conflicting Docker sources
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/docker.list
+    - /etc/apt/sources.list.d/docker.list.save
+    - /etc/apt/keyrings/docker.gpg
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install required packages
+  apt:
+    name:
+      - docker.io
+      - docker-compose-plugin
+      - git
+      - curl
+      - nginx
+      - python3-pip
+    state: present
+
+- name: Install Docker Python SDK 
+  apt:
+    name:
+      - python3-docker
+    state: present
+
+
+- name: Start and enable Docker service
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Create application user
+  user:
+    name: "{{ app_user }}"
+    system: yes
+    shell: /bin/bash
+    home: "{{ app_directory }}"
+    create_home: yes
+
+- name: Add application user to docker group
+  user:
+    name: "{{ app_user }}"
+    groups: docker
+    append: yes
+
+- name: Create application directory structure
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: '0755'
+  loop:
+    - "{{ app_directory }}"
+    - "{{ app_directory }}/backend"
+    - "{{ app_directory }}/frontend"
+    - "{{ app_directory }}/nginx"
+
+- name: Copy application files from source
+  synchronize:
+    src: "{{ playbook_dir }}/../../backend/"
+    dest: "{{ app_directory }}/backend/"
+    delete: no
+    recursive: yes
+  delegate_to: "{{ inventory_hostname }}"
+
+- name: Copy frontend files from source
+  synchronize:
+    src: "{{ playbook_dir }}/../../frontend/"
+    dest: "{{ app_directory }}/frontend/"
+    delete: no
+    recursive: yes
+  delegate_to: "{{ inventory_hostname }}"
+
+- name: Copy environment file
+  template:
+    src: env.j2
+    dest: "{{ app_directory }}/.env"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: '0600'
+
+- name: Copy docker-compose.yml
+  copy:
+    src: "{{ playbook_dir }}/../../docker-compose.yml"
+    dest: "{{ app_directory }}/docker-compose.yml"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: '0644'
+
+- name: Set ownership of application files
+  file:
+    path: "{{ app_directory }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    recurse: yes
+
+- name: Remove existing nginx configuration
+  file:
+    path: /etc/nginx/conf.d/pcbrecon.conf
+    state: absent
+
+- name: Copy nginx configuration
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/conf.d/pcbrecon.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart nginx
+
+- name: Test nginx configuration
+  command: nginx -t
+  register: nginx_test
+  changed_when: false
+
+- name: Restart nginx
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes
+
+- name: Stop existing Docker containers
+  command: docker compose down
+  args:
+    chdir: "{{ app_directory }}"
+  become_user: "{{ app_user }}"
+  ignore_errors: yes
+
+- name: Pull Docker images
+  command: docker compose pull
+  args:
+    chdir: "{{ app_directory }}"
+  become_user: "{{ app_user }}"
+  ignore_errors: yes
+
+- name: Build and start Docker containers
+  command: docker compose up -d --build
+  args:
+    chdir: "{{ app_directory }}"
+  become_user: "{{ app_user }}"
+
+- name: Wait for backend to be ready
+  uri:
+    url: "http://localhost:{{ backend_port }}/health"
+    method: GET
+    status_code: 200
+  retries: 30
+  delay: 10
+  register: backend_health
+
+- name: Wait for frontend to be ready
+  uri:
+    url: "http://localhost:{{ frontend_port }}"
+    method: GET
+    status_code: 200
+  retries: 30
+  delay: 10
+  register: frontend_health
+
+- name: Display container status
+  command: docker compose ps
+  args:
+    chdir: "{{ app_directory }}"
+  become_user: "{{ app_user }}"
+  register: container_status
+
+- name: Show container status
+  debug:
+    var: container_status.stdout_lines
