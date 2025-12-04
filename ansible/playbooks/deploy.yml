@@ -1,0 +1,25 @@
+---
+- name: Deploy PCBRecon Application
+  hosts: pcbrecon-server
+  become: yes
+  
+  vars_files:
+    - ../secrets.yml
+  
+  vars:
+    gemini_api_key: "{{ vault_gemini_api_key }}"
+    db_password: "{{ vault_db_password }}"
+    supabase_url: "{{ vault_supabase_url }}"
+    supabase_anon_key: "{{ vault_supabase_anon_key }}"
+  
+  roles:
+    - pcbrecon
+  
+  post_tasks:
+    - name: Display deployment information
+      debug:
+        msg:
+          - "Deployment completed successfully!"
+          - "Application URL: http://{{ ansible_host }}"
+          - "Backend Health: http://{{ ansible_host }}/api/health"
+          - "Frontend: http://{{ ansible_host }}"
